@@ -17,34 +17,50 @@ public class JPAExample {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date birthDate1 = Calendar.getInstance().getTime();
         Date birthDate2 = Calendar.getInstance().getTime();
+        Date birthDate3 = Calendar.getInstance().getTime();
         try {
             birthDate1 = sdf.parse("1997-07-21");
             birthDate2 = sdf.parse("1993-12-01");
+            birthDate3 = sdf.parse("1991-09-12");
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        Klass classBp2 = new Klass("Budapest 2016-2");
+        Klass classBp2 = new Klass("Budapest 2016-2", CCLocation.BUDAPEST);
+        Klass classMsklc1 = new Klass("Miskolc 2016-7", CCLocation.MISKOLC);
+
         Address address = new Address("Hungary", "1234", "Budapest", "Macskakő út 5.");
-        Student student = new Student("Ödön", "odon@tokodon.hu", birthDate1, address);
+        Student student = new Student("Ödön", "odon@tokodon.hu", birthDate1, address, "0660232323");
         classBp2.addStudent(student);
 
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
+        em.persist(classBp2);
+        em.persist(classMsklc1);
         em.persist(address);
         em.persist(student);
         transaction.commit();
         System.out.println("Ödön saved.");
 
         Address address2 = new Address("Hungary", "6789", "Budapest", "Harap u. 3.");
-        Student student2 = new Student("Aladár", "ktyfl@gmail.com", birthDate2, address);
-        classBp2.addStudent(student2);
+        Student student2 = new Student("Aladár", "ktyfl@gmail.com", birthDate2, address2, "0660546548");
+        classMsklc1.addStudent(student2);
 
         transaction.begin();
         em.persist(student2);
         em.persist(address2);
         transaction.commit();
         System.out.println("Aladár saved.");
+
+        Address address3 = new Address("Hungary", "2323", "Mucsajröcsöge", "Harap u. 3.");
+        Student student3 = new Student("Tasziló", "heh@gmail.com", birthDate3, address3, "066060606");
+        classMsklc1.addStudent(student3);
+
+        transaction.begin();
+        em.persist(student3);
+        em.persist(address3);
+        transaction.commit();
+        System.out.println("Tasziló saved.");
     }
 
     public static void main(String[] args) {
